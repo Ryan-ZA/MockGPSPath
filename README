@@ -1,0 +1,7 @@
+MockGPSPath or FakeGPSPath
+
+An Android App that can be used to create a path on a map, and then have your GPS on your device follow that path.
+
+Mostly useful for testing location based apps.
+
+License: GPLv3
