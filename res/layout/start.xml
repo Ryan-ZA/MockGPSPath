@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="4dp"
-        android:text="Path Distance"
+        android:text="@string/path_distance"
         android:textColor="#aaaaaa" />
 
     <TextView
@@ -24,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
-        android:text="Speed"
+        android:text="@string/speed"
         android:textColor="#aaaaaa" />
 
     <SeekBar
@@ -48,14 +48,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:checked="false"
-        android:text="Randomize Speed"
+        android:text="@string/randomize_speed"
         android:textColor="#aaaaaa" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
-        android:text="Path Duration"
+        android:text="@string/path_duration"
         android:textColor="#aaaaaa" />
 
     <TextView
@@ -70,7 +70,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
-        android:text="Est. Path Completion Time"
+        android:text="@string/est_path_completion_time"
         android:textColor="#aaaaaa" />
 
     <TextView

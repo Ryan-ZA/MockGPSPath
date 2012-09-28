@@ -430,13 +430,13 @@ public class MockGPSPathActivity extends MapActivity {
 			quickAction.addDividerView(textView);
 
 			ActionItem item = new ActionItem();
-			item.setTitle("OK");
+			item.setTitle(getString(R.string.ok));
 			item.setActionId(OK);
 			item.setIcon(getResources().getDrawable(R.drawable.trash));
 			quickAction.addActionItem(item);
 
 			item = new ActionItem();
-			item.setTitle("CANCEL");
+			item.setTitle(getString(R.string.cancel));
 			item.setActionId(CANCEL);
 			item.setIcon(getResources().getDrawable(R.drawable.cancel));
 			quickAction.addActionItem(item);
@@ -605,17 +605,17 @@ public class MockGPSPathActivity extends MapActivity {
 		public void onClick(View v) {
 			QuickAction quickAction = new QuickAction(MockGPSPathActivity.this);
 			TextView textView = new TextView(MockGPSPathActivity.this);
-			textView.setText("Stop current mock paths");
+			textView.setText(R.string.stop_current_mock_paths);
 			quickAction.addDividerView(textView);
 
 			ActionItem item = new ActionItem();
-			item.setTitle("OK");
+			item.setTitle(getString(R.string.ok));
 			item.setActionId(OK);
 			item.setIcon(getResources().getDrawable(R.drawable.cancel));
 			quickAction.addActionItem(item);
 
 			item = new ActionItem();
-			item.setTitle("CANCEL");
+			item.setTitle(getString(R.string.cancel));
 			item.setActionId(CANCEL);
 			quickAction.addActionItem(item);
 

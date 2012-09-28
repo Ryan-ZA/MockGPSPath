@@ -59,4 +59,7 @@
 		<item name="@android:windowExitAnimation">@anim/disappear</item>
 	</style>
 	
+	<style name="gray1">
+		<item name="android:textColor">#aaaaaa</item>
+	</style>
 </resources>

@@ -3,4 +3,38 @@
 
     <string name="app_name">Fake GPS Path</string>
 
+    <string name="drag_to_map_to_create_a_straight_path_from_last_point">Drag to map to create a straight path from last point</string>
+
+    <string name="drag_to_map_to_create_a_path_from_last_point_that_follows_roads">Drag to map to create a path from last point that follows roads</string>
+
+    <string name="drag_to_map_to_create_paths">Drag to map to create paths</string>
+
+    <string name="speed">Speed</string>
+
+    <string name="randomize_speed">Randomize Speed</string>
+
+    <string name="path_duration">Path Duration</string>
+
+    <string name="est_path_completion_time">Est. Path Completion Time</string>
+
+    <string name="path_distance">Path Distance</string>
+
+    <string name="you_must_enable_allow_mock_locations_to_use_this_app_">You must enable \'Allow mock locations\' to use this app.</string>
+
+    <string name="enable_now">Enable now</string>
+
+    <string name="quit">Quit</string>
+
+    <string name="no_search_results_found">No search results found</string>
+
+    <string name="error_fetching_search_results">Error fetching search results</string>
+
+    <string name="stop_current_mock_paths">Stop current mock paths</string>
+
+    <string name="ok">OK</string>
+
+    <string name="cancel">CANCEL</string>
+
+    <string name="mockgpspath_running_">MockGPSPath Running...</string>
+
 </resources>

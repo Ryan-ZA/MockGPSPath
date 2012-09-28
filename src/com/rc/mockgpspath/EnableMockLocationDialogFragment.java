@@ -22,15 +22,15 @@ public class EnableMockLocationDialogFragment {
 	public static Dialog createDialog(final Activity activity) {
 		AlertDialog.Builder builder = new Builder(activity);
 
-		builder.setMessage("You must enable 'Allow mock locations' to use this app.");
-		builder.setPositiveButton("Enable now", new OnClickListener() {
+		builder.setMessage(R.string.you_must_enable_allow_mock_locations_to_use_this_app_);
+		builder.setPositiveButton(R.string.enable_now, new OnClickListener() {
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				activity.startActivity(new Intent().setClassName("com.android.settings", "com.android.settings.DevelopmentSettings"));
 			}
 		});
-		builder.setNegativeButton("Quit", new OnClickListener() {
+		builder.setNegativeButton(R.string.quit, new OnClickListener() {
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {

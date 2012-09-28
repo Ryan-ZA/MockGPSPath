@@ -69,47 +69,6 @@
             android:background="@drawable/topbar" >
         </View>
 
-        <!-- <View -->
-        <!-- android:id="@+id/topbar_bg_left" -->
-        <!-- android:layout_width="75dp" -->
-        <!-- android:layout_height="72dp" -->
-        <!-- android:layout_marginLeft="-10dp" -->
-        <!-- android:layout_marginTop="-10dp" -->
-        <!-- android:background="@drawable/topbar" > -->
-        <!-- </View> -->
-
-
-        <!-- <View -->
-        <!-- android:id="@+id/topbar_bg_left2" -->
-        <!-- android:layout_width="135dp" -->
-        <!-- android:layout_height="72dp" -->
-        <!-- android:layout_marginLeft="-10dp" -->
-        <!-- android:layout_marginTop="-10dp" -->
-        <!-- android:background="@drawable/topbar" > -->
-        <!-- </View> -->
-
-
-        <!-- <View -->
-        <!-- android:id="@+id/topbar_bg_right" -->
-        <!-- android:layout_width="75dp" -->
-        <!-- android:layout_height="72dp" -->
-        <!-- android:layout_alignParentRight="true" -->
-        <!-- android:layout_marginRight="-10dp" -->
-        <!-- android:layout_marginTop="-10dp" -->
-        <!-- android:background="@drawable/topbar" > -->
-        <!-- </View> -->
-
-
-        <!-- <View -->
-        <!-- android:id="@+id/topbar_bg_right2" -->
-        <!-- android:layout_width="130dp" -->
-        <!-- android:layout_height="72dp" -->
-        <!-- android:layout_alignParentRight="true" -->
-        <!-- android:layout_marginRight="-10dp" -->
-        <!-- android:layout_marginTop="-10dp" -->
-        <!-- android:background="@drawable/topbar" > -->
-        <!-- </View> -->
-
         <View
             android:id="@+id/mappin_holder"
             android:layout_width="48dp"
@@ -208,7 +167,7 @@
                 android:background="@drawable/popup"
                 android:gravity="center"
                 android:padding="6dp"
-                android:text="Drag to map to create a straight path from last point" />
+                android:text="@string/drag_to_map_to_create_a_straight_path_from_last_point" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -231,7 +190,7 @@
                 android:background="@drawable/popup"
                 android:gravity="center"
                 android:padding="6dp"
-                android:text="Drag to map to create a path from last point that follows roads" />
+                android:text="@string/drag_to_map_to_create_a_path_from_last_point_that_follows_roads" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -254,7 +213,7 @@
                 android:background="@drawable/popup"
                 android:gravity="center"
                 android:padding="6dp"
-                android:text="Drag to map to create paths" />
+                android:text="@string/drag_to_map_to_create_paths" />
 
             <ImageView
                 android:layout_width="wrap_content"

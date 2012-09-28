@@ -152,7 +152,7 @@ public class MapsHelper {
 				try {
 					final List<Address> addresslist = geocoder.getFromLocationName(searchstring, 1);
 					if (addresslist.isEmpty()) {
-						Toast.makeText(activity, "No search results found", Toast.LENGTH_SHORT).show();
+						Toast.makeText(activity, R.string.no_search_results_found, Toast.LENGTH_SHORT).show();
 					} else {
 						activity.runOnUiThread(new Runnable() {
 
@@ -174,7 +174,7 @@ public class MapsHelper {
 
 						@Override
 						public void run() {
-							Toast.makeText(activity, "Error fetching search results", Toast.LENGTH_SHORT).show();
+							Toast.makeText(activity, R.string.error_fetching_search_results, Toast.LENGTH_SHORT).show();
 						}
 					});
 				}

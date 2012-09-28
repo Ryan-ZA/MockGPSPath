@@ -78,13 +78,13 @@ public class MockGPSPathService extends Service {
 	}
 
 	public void createProgressNotification() {
-		Notification notification = new Notification(R.drawable.ic_launcher, "MockGPSPath Running...", System.currentTimeMillis());
+		Notification notification = new Notification(R.drawable.ic_launcher, getString(R.string.mockgpspath_running_), System.currentTimeMillis());
 		notification.flags = Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT;
 
 		Intent notificationIntent = new Intent(this, MockGPSPathActivity.class);
 		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
-		notification.setLatestEventInfo(this, "MockGPSPath Running...", "MockGPSPath Running...", contentIntent);
+		notification.setLatestEventInfo(this, getString(R.string.mockgpspath_running_), getString(R.string.mockgpspath_running_), contentIntent);
 
 		startForeground(1337, notification);
 	}
