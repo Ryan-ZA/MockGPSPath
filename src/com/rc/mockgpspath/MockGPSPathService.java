@@ -12,6 +12,7 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.provider.Settings;
@@ -69,7 +70,7 @@ public class MockGPSPathService extends Service {
 			currentThread.realpoints = intent.getBooleanArrayExtra("realpoints");
 			currentThread.MperSec = intent.getDoubleExtra("MperSec", 500);
 			currentThread.randomizespeed = intent.getBooleanExtra("randomizespeed", false);
-			currentThread.canUpdateMock = intent.getBooleanExtra("canUpdateMock", false);
+			//currentThread.canUpdateMock = intent.getBooleanExtra("canUpdateMock", false);
 			currentThread.start();
 		}
 
@@ -134,7 +135,7 @@ public class MockGPSPathService extends Service {
 				int value = mock?1:0;
 				CommandCapture command = new CommandCapture(0, "su -c "
 						+quote("sqlite3 /data/data/com.android.providers.settings/databases/settings.db "
-								+quote("update secure set value="+quote(""+value)+" where name="+quote("mock_location")+";")));
+								+quote("update secure set value="+quote(Integer.toString(value))+" where name="+quote("mock_location")+";")));
 				try {
 					RootTools.getShell(true).add(command).waitForFinish();
 					RootTools.log("su command completed");
@@ -144,15 +145,29 @@ public class MockGPSPathService extends Service {
 			}
 		}
 
-		
-		private boolean enableMockAndGetOldValue() {
+		private boolean getMockValue() {
 			boolean oldMock = false;
 			try {
 				oldMock = Settings.Secure.getInt(getContentResolver(), "mock_location")!=0;
 			} catch (Exception e) {
 				RootTools.log(e.getStackTrace().toString());
 			}
+			return oldMock;
+		}
+		
+		private boolean enableMockAndGetOldValue() {
+			boolean oldMock;
+			oldMock = getMockValue();
+			RootTools.log("old mock: "+oldMock);
 			restoreMock(true);
+			RootTools.log("double checking...");
+			while(getMockValue()!=true) {
+				RootTools.log("waiting for mock..");
+			}
+			RootTools.log("got it...");
+			String permission = "android.permission.ACCESS_MOCK_LOCATION";
+		    RootTools.log("also, "+permission+" is "+(getApplicationContext().checkCallingOrSelfPermission(permission)==PackageManager.PERMISSION_GRANTED));
+			
 			return oldMock;
 		}
 		
@@ -161,12 +176,19 @@ public class MockGPSPathService extends Service {
 		public void run() {
 			boolean oldMock;
 			
+			if(RootTools.isAccessGiven()) {
+				RootTools.log("got access");
+				canUpdateMock = true;
+			} else {
+				RootTools.log("no access");
+			}
+			
 			Log.i("MockGPSService", "Starting UpdateGPSThread");
 			createProgressNotification();
 			Running = true;
 
 			LocationManager locationManager = (LocationManager) getSystemService("location");
-			
+						
 			//locationManager.addTestProvider("gps", false, false, false, false, false, true, true, 1, 1);
 			
 			// the way FreeGPS does it:
