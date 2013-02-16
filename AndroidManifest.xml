@@ -39,6 +39,6 @@
         <activity
             android:name="com.google.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
-    </application>
+        <meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyAvTWtccybClkHF1-Arw3GfMq2YoIzz37Q"></meta-data></application>
 
 </manifest>

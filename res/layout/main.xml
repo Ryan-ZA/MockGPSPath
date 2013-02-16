@@ -4,21 +4,12 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
-    <com.google.ads.AdView
-        android:id="@+id/adView"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        ads:adSize="BANNER"
-        ads:adUnitId="a14f79584c5f029" />
-
     <com.rc.mockgpspath.MockGPSMapView
         android:id="@+id/mapview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_above="@+id/adView"
         android:layout_marginTop="60dp"
-        android:apiKey="0_pExoYBVGwE2mraZsxAF-0farEGJTolSPvq4iQ"
+        android:apiKey="0FxtTfyGwslkLU-6ZFy6ow7cuq9dM0ottT2feSA"
         android:clickable="true"
         android:enabled="true" />
     <!-- android:apiKey="0_pExoYBVGwF6yJGbLYYv1Lq4LOn4s0KUOMftYQ" -->
@@ -27,7 +18,6 @@
         android:id="@+id/searchtext"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/adView"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
@@ -41,7 +31,6 @@
         android:id="@+id/search"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_above="@+id/adView"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="8dp"
         android:layout_marginRight="8dp"
