@@ -70,7 +70,7 @@ public class MockGPSPathService extends Service {
 			currentThread.realpoints = intent.getBooleanArrayExtra("realpoints");
 			currentThread.MperSec = intent.getDoubleExtra("MperSec", 500);
 			currentThread.randomizespeed = intent.getBooleanExtra("randomizespeed", false);
-			//currentThread.canUpdateMock = intent.getBooleanExtra("canUpdateMock", false);
+			currentThread.canUpdateMock = intent.getBooleanExtra("canUpdateMock", false);
 			currentThread.start();
 		}
 
@@ -160,11 +160,12 @@ public class MockGPSPathService extends Service {
 			oldMock = getMockValue();
 			RootTools.log("old mock: "+oldMock);
 			restoreMock(true);
-			RootTools.log("double checking...");
-			while(getMockValue()!=true) {
+			RootTools.log("double checking..."+getMockValue());
+			/*while(getMockValue()!=true) {
 				RootTools.log("waiting for mock..");
 			}
 			RootTools.log("got it...");
+			*/
 			String permission = "android.permission.ACCESS_MOCK_LOCATION";
 		    RootTools.log("also, "+permission+" is "+(getApplicationContext().checkCallingOrSelfPermission(permission)==PackageManager.PERMISSION_GRANTED));
 			
@@ -175,14 +176,7 @@ public class MockGPSPathService extends Service {
 		@Override
 		public void run() {
 			boolean oldMock;
-			
-			if(RootTools.isAccessGiven()) {
-				RootTools.log("got access");
-				canUpdateMock = true;
-			} else {
-				RootTools.log("no access");
-			}
-			
+						
 			Log.i("MockGPSService", "Starting UpdateGPSThread");
 			createProgressNotification();
 			Running = true;
