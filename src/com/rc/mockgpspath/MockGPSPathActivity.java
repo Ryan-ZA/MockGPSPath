@@ -1,6 +1,7 @@
 package com.rc.mockgpspath;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 import android.app.Dialog;
@@ -27,8 +28,8 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
-import com.google.ads.AdRequest;
-import com.google.ads.AdView;
+//import com.google.ads.AdRequest;
+//import com.google.ads.AdView;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapView;
@@ -39,6 +40,8 @@ import com.rc.mockgpspath.DraggableLayout.DragListener;
 import com.rc.mockgpspath.quickaction.ActionItem;
 import com.rc.mockgpspath.quickaction.QuickAction;
 import com.rc.mockgpspath.quickaction.QuickAction.OnActionItemClickListener;
+
+import com.stericson.RootTools.RootTools;
 
 /**
  * Main activity. Handles all UI operations. Contains the main map view which is
@@ -58,6 +61,8 @@ public class MockGPSPathActivity extends MapActivity {
 	final static int MODE_ADDING = 1;
 	final static int MODE_PLAYING = 2;
 
+	boolean canUpdateMock = false;
+	
 	MapView mapView;
 	NodeOverlay nodeOverlay;
 	ImageView trash, play, stop;
@@ -77,7 +82,10 @@ public class MockGPSPathActivity extends MapActivity {
 		setContentView(R.layout.main);
 
 		mapView = (MapView) findViewById(R.id.mapview);
-		mapView.getController().setZoom(2);
+		
+		mapView.setBuiltInZoomControls(true);
+		
+		//mapView.getController().setZoom(2);
 
 		DraggableLayout draggableLayout = (DraggableLayout) findViewById(R.id.topbar);
 		mappin = findViewById(R.id.mappin);
@@ -109,6 +117,16 @@ public class MockGPSPathActivity extends MapActivity {
 		trash.setOnClickListener(trashClickListener);
 		play.setOnClickListener(playClickListener);
 		stop.setOnClickListener(stopClickListener);
+		
+		RootTools.debugMode = true;
+		
+		if(RootTools.isAccessGiven()) {
+			RootTools.log("got access");
+			canUpdateMock = true;
+		} else {
+			RootTools.log("no access");
+		}
+		
 
 		if (MockGPSPathService.instance != null && MockGPSPathService.instance.currentThread != null) {
 			// If the service is running, then we already have a path and are
@@ -138,17 +156,23 @@ public class MockGPSPathActivity extends MapActivity {
 			}
 		}
 
+		/*
 		mapView.getController().setZoom(zoomLevel);
 		if (centerPoint != null)
 			mapView.getController().setCenter(centerPoint);
+		*/
 
+		/*
 		AdView adView = (AdView) findViewById(R.id.adView);
 		adView.setVisibility(View.VISIBLE);
 		AdRequest adRequest = new AdRequest();
 		adView.loadAd(adRequest);
+		*/
 
 		View search = findViewById(R.id.search);
 		search.setOnClickListener(searchClickListener);
+		
+		
 	}
 
 	@Override
@@ -244,10 +268,13 @@ public class MockGPSPathActivity extends MapActivity {
 	protected void onResume() {
 		super.onResume();
 		myLocationOverlay.enableMyLocation();
+		
 		checkIfMockEnabled();
 	}
 
 	private void checkIfMockEnabled() {
+		if (canUpdateMock) return;
+		
 		try {
 			int mock_location = Settings.Secure.getInt(getContentResolver(), "mock_location");
 			if (mock_location == 0) {
@@ -515,7 +542,7 @@ public class MockGPSPathActivity extends MapActivity {
 					}
 					double MperSec = progress * 1000.0 / 3600.0;
 
-					startMockPaths(MperSec, randomizespeed.isChecked());
+					startMockPaths(MperSec, randomizespeed.isChecked(), canUpdateMock);
 				}
 			});
 
@@ -558,12 +585,13 @@ public class MockGPSPathActivity extends MapActivity {
 	 * @param randomizespeed
 	 *            Whether or not to use a random speed.
 	 */
-	void startMockPaths(double MperSec, boolean randomizespeed) {
+	void startMockPaths(double MperSec, boolean randomizespeed, boolean canUpdateMock) {
 		Intent i = new Intent(MockGPSPathActivity.this, MockGPSPathService.class);
 
 		i.putExtra("action", "com.rc.mockgpspath.start");
 		i.putExtra("MperSec", MperSec);
 		i.putExtra("randomizespeed", randomizespeed);
+		i.putExtra("canUpdateMock", canUpdateMock);
 
 		ArrayList<String> pass = new ArrayList<String>();
 		boolean[] realpoints = new boolean[nodeOverlay.overlaylist.size()];

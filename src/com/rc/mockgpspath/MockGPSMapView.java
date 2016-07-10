@@ -18,8 +18,11 @@ public class MockGPSMapView extends MapView {
 
 	public MockGPSMapView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		this.setBuiltInZoomControls(true);
+		//this.setReticleDrawMode(MapView.ReticleDrawMode.DRAW_RETICLE_OVER);
 	}
 
+	/*
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent ev) {
 		if (ev.getAction() == MotionEvent.ACTION_DOWN) {
@@ -36,4 +39,5 @@ public class MockGPSMapView extends MapView {
 
 		return super.onInterceptTouchEvent(ev);
 	}
+	*/
 }

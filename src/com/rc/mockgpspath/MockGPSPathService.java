@@ -1,13 +1,21 @@
 package com.rc.mockgpspath;
 
 import java.util.ArrayList;
+import java.lang.String;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+import com.stericson.RootTools.CommandCapture;
+import com.stericson.RootTools.RootTools;
 
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.provider.Settings;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -62,6 +70,7 @@ public class MockGPSPathService extends Service {
 			currentThread.realpoints = intent.getBooleanArrayExtra("realpoints");
 			currentThread.MperSec = intent.getDoubleExtra("MperSec", 500);
 			currentThread.randomizespeed = intent.getBooleanExtra("randomizespeed", false);
+			currentThread.canUpdateMock = intent.getBooleanExtra("canUpdateMock", false);
 			currentThread.start();
 		}
 
@@ -109,22 +118,82 @@ public class MockGPSPathService extends Service {
 		public double MperSec;
 		public boolean randomizespeed;
 
+		public boolean canUpdateMock;
+		
 		private double curLat, curLong;
 		private long startTime;
 		private float curBearing;
 
 		private double lastMetersTravelled = 0;
 
+		private String quote(String s) {
+			return "\""+s.replace("\\","\\\\").replace("\"", "\\\"")+"\"";
+		}
+		
+		private void restoreMock(boolean mock) {
+			if (canUpdateMock) {
+				int value = mock?1:0;
+				CommandCapture command = new CommandCapture(0, "su -c "
+						+quote("sqlite3 /data/data/com.android.providers.settings/databases/settings.db "
+								+quote("update secure set value="+quote(Integer.toString(value))+" where name="+quote("mock_location")+";")));
+				try {
+					RootTools.getShell(true).add(command).waitForFinish();
+					RootTools.log("su command completed");
+				} catch (Exception e) {
+					RootTools.log(e.getStackTrace().toString());
+				}
+			}
+		}
+
+		private boolean getMockValue() {
+			boolean oldMock = false;
+			try {
+				oldMock = Settings.Secure.getInt(getContentResolver(), "mock_location")!=0;
+			} catch (Exception e) {
+				RootTools.log(e.getStackTrace().toString());
+			}
+			return oldMock;
+		}
+		
+		private boolean enableMockAndGetOldValue() {
+			boolean oldMock;
+			oldMock = getMockValue();
+			RootTools.log("old mock: "+oldMock);
+			restoreMock(true);
+			RootTools.log("double checking..."+getMockValue());
+			/*while(getMockValue()!=true) {
+				RootTools.log("waiting for mock..");
+			}
+			RootTools.log("got it...");
+			*/
+			String permission = "android.permission.ACCESS_MOCK_LOCATION";
+		    RootTools.log("also, "+permission+" is "+(getApplicationContext().checkCallingOrSelfPermission(permission)==PackageManager.PERMISSION_GRANTED));
+			
+			return oldMock;
+		}
+		
+		
 		@Override
 		public void run() {
+			boolean oldMock;
+						
 			Log.i("MockGPSService", "Starting UpdateGPSThread");
 			createProgressNotification();
 			Running = true;
 
 			LocationManager locationManager = (LocationManager) getSystemService("location");
-			locationManager.addTestProvider("gps", false, false, false, false, false, true, true, 1, 1);
+						
+			//locationManager.addTestProvider("gps", false, false, false, false, false, true, true, 1, 1);
+			
+			// the way FreeGPS does it:
+			
+			oldMock = enableMockAndGetOldValue();
+			
+			locationManager.addTestProvider("gps", false, true, false, false, true, false, false, 1, 1);
 			locationManager.setTestProviderEnabled("gps", true);
 
+			restoreMock(oldMock);
+			
 			startTime = System.currentTimeMillis();
 			distances = new double[locations.size() - 1];
 			for (int i = 0; i < locations.size() - 1; i++) {
@@ -140,14 +209,32 @@ public class MockGPSPathService extends Service {
 				loc.setLongitude(curLong);
 				loc.setBearing(curBearing);
 				loc.setSpeed((float) MperSec);
+				loc.setAccuracy(4);
+				
+				// crazy jellybean fix
+				try {
+					Location.class.getMethod("makeComplete").invoke(loc);
+				} catch (NoSuchMethodException e) {
+					;
+			    } catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+				oldMock = enableMockAndGetOldValue();
 				locationManager.setTestProviderLocation("gps", loc);
+				restoreMock(oldMock);
+				
 				try {
 					Thread.sleep(TIME_BETWEEN_UPDATES_MS);
 				} catch (Exception e) {
 				}
 			}
+			
+			oldMock = enableMockAndGetOldValue();
 			locationManager.setTestProviderEnabled("gps", false);
 			locationManager.removeTestProvider("gps");
+			restoreMock(oldMock);
+			
 			removeProgressNotification();
 			if (currentThread == this)
 				currentThread = null;
